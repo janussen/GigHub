@@ -1,0 +1,17 @@
+﻿@model GigHub.ViewModels.FollowingsViewModel
+@{
+    ViewBag.Title = "Followings";
+}
+
+<h2>@Model.Heading</h2>
+
+<ul class="followings voffset4">
+    @foreach (var following in Model.MyFollowings)
+    {
+        <li>
+            @following.Name
+            @following.Id
+        </li>
+    }
+</ul>
+

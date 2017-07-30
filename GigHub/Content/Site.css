@@ -156,3 +156,7 @@ h6,
 .gigs > li .details .genre {
     font-size: 15px;
 }
+
+.followings {
+    list-style: none;
+}
