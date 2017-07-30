@@ -20,7 +20,10 @@
             <div class="details">
                 <span class="artist">
                     @gig.Artist.Name
-                    <button class="btn btn-link">Follow</button>
+                    @if (Model.ShowActions)
+                    {
+                        <button class="btn btn-link">Follow</button>
+                    }
                 </span>
                 <span class="genre">
                     @gig.Genre.Name
