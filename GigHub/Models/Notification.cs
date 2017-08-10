@@ -30,5 +30,22 @@ namespace GigHub.Models
             Gig = gig;
             Type = type;
         }
+
+        public Notification(Gig gig, NotificationType type, string newVenue, DateTime newDateTime)
+        {
+            if (gig == null) { throw new ArgumentNullException("gig"); }
+
+            DateTime = DateTime.Now;
+            Gig = gig;
+            Type = type;
+            if (gig.Venue != newVenue)
+            {
+                OriginalVenue = gig.Venue;
+            }
+            if (gig.DateTime != newDateTime)
+            {
+                OriginalDateTime = gig.DateTime;
+            }
+        }
     }
 }
