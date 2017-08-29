@@ -212,12 +212,17 @@
     <Compile Include="Controllers\Api\AttendancesController.cs" />
     <Compile Include="Controllers\Api\FollowingsController.cs" />
     <Compile Include="Controllers\Api\GigsController.cs" />
+    <Compile Include="Controllers\Api\NotificationsController.cs" />
     <Compile Include="Controllers\FollowingsController.cs" />
     <Compile Include="Controllers\GigsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Dto\AttendanceDto.cs" />
     <Compile Include="Dto\FollowingDto.cs" />
+    <Compile Include="Dto\GenreDto.cs" />
+    <Compile Include="Dto\GigDto.cs" />
+    <Compile Include="Dto\NotificationDto.cs" />
+    <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
