@@ -11,9 +11,9 @@ namespace GigHub.Models
 
         public NotificationType Type { get; private set; }
 
-        public DateTime? OriginalDateTime { get; set; }
+        public DateTime? OriginalDateTime { get; private set; }
 
-        public string OriginalVenue { get; set; }
+        public string OriginalVenue { get; private set; }
 
         [Required]
         public Gig Gig { get; private set; }
@@ -22,7 +22,7 @@ namespace GigHub.Models
         {
         }
 
-        public Notification(Gig gig, NotificationType type)
+        private Notification(Gig gig, NotificationType type)
         {
             if (gig == null) { throw new ArgumentNullException("gig"); }
 
@@ -31,7 +31,7 @@ namespace GigHub.Models
             Type = type;
         }
 
-        public Notification(Gig gig, NotificationType type, string newVenue, DateTime newDateTime)
+        private Notification(Gig gig, NotificationType type, string newVenue, DateTime newDateTime)
         {
             if (gig == null) { throw new ArgumentNullException("gig"); }
 
@@ -46,6 +46,21 @@ namespace GigHub.Models
             {
                 OriginalDateTime = gig.DateTime;
             }
+        }
+
+        public static Notification GigCreated(Gig gig)
+        {
+            return new Notification(gig, NotificationType.GigCreated);
+        }
+
+        public static Notification GigUpdated(Gig newGig, string newVenue, DateTime newDateTime)
+        {
+            return new Notification(newGig, NotificationType.GigUpdated, newVenue, newDateTime);
+        }
+
+        public static Notification GigCanceled(Gig gig)
+        {
+            return new Notification(gig, NotificationType.GigCanceled);
         }
     }
 }
