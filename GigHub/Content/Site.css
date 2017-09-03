@@ -182,3 +182,10 @@ h6,
 .popover-notifications ul.notifications .highlight {
   font-weight: bold;
 }
+#seachGigs {
+  width: 300px;
+}
+#SearchTerm {
+  box-shadow: none;
+  transition: none;
+}
