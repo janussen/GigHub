@@ -18,7 +18,7 @@ namespace GigHub.Models
 
         public Notification Notification { get; private set; }
 
-        public bool IsRead { get; set; }
+        public bool IsRead { get; private set; }
 
         // Default constructor for Entity Framework to use (cannot use custom constructor)
         protected UserNotification()
@@ -32,6 +32,11 @@ namespace GigHub.Models
 
             Notification = notification;
             User = user;
+        }
+
+        public void Read()
+        {
+            IsRead = true;
         }
     }
 }

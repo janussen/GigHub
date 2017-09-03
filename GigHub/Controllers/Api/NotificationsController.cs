@@ -43,8 +43,23 @@ namespace GigHub.Controllers.Api
                     Venue = n.Gig.Venue
                 },
                 OriginalDateTime = n.OriginalDateTime,
-                OriginalVenue = n.OriginalVenue
+                OriginalVenue = n.OriginalVenue,
+                Type = n.Type
             });
+        }
+
+        [HttpPost]
+        public IHttpActionResult MarkAllAsRead()
+        {
+            var userId = User.Identity.GetUserId();
+            var userNotifications = _context.UserNotifications
+                                    .Where(un => un.UserId == userId && !un.IsRead)
+                                    .ToList();
+
+            userNotifications.ForEach(un => un.Read());
+
+            _context.SaveChanges();
+            return Ok();
         }
     }
 }

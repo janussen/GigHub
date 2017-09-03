@@ -36,8 +36,71 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/lib")
     @RenderSection("scripts", required: false)
+    <script type="text/x-template" id="notifications-template">
+        <ul class="notifications">
+            <%
+                _.each(notifications, function(notification){
+                    if (notification.type == 1) { %>
+                        <li><span class="highlight"><%= notification.gig.artist.name %></span> has canceled the gig at <%= notification.gig.venue %> at <%= moment(notification.gig.dateTime).format("D MMM HH:mm") %></li> 
+                    <% }
+                    if (notification.type == 2) { 
+                        if (notification.originalVenue != notification.gig.venue && notification.originalDateTime == notification.gig.dateTime) {
+                            %>
+                            <li><span class="highlight"><%= notification.gig.artist.name %></span> has updated the gig from <%= notification.originalVenue %> to <%= notification.gig.venue %></li>
+                            <%    
+                        }
+                        if (notification.originalVenue == notification.gig.venue && notification.originalDateTime != notification.gig.dateTime) {
+                            %>
+                            <li><span class="highlight"><%= notification.gig.artist.name %></span> has updated the gig from <%= notification.originalVenue %> at <%= notification.originalDateTime %> to <%= notification.gig.venue %> at <%= moment(notification.gig.dateTime).format("D MMM HH:mm") %></li>
+                            <%
+                        }
+                        if (notification.originalVenue != notification.gig.venue && notification.originalDateTime != notification.gig.dateTime) {
+                            %>
+                            <li><span class="highlight"><%= notification.gig.artist.name %></span> has updated the gig at <%= notification.gig.venue %> from <%= notification.originalDateTime %> to <%= moment(notification.gig.dateTime).format("D MMM HH:mm") %></li>
+                            <%
+                        }
+                    }
+                    if (notification.type == 3) { %>
+                        <li><span class="highlight"><%= notification.gig.artist.name %></span> has created the gig at <%= notification.gig.venue %> at <%= moment(notification.gig.dateTime).format("D MMM HH:mm") %></li>
+                    <% }
+                })
+            %>
+        </ul>
+    </script>
+    <script>
+        $(document).ready(function () {
+            $.getJSON("/api/notifications", function (notifications) {
+                if (notifications.length == 0) { return; }
+
+                $(".js-notifications-count")
+                    .text(notifications.length)
+                    .removeClass("hide")
+                    .addClass("animated bounceInDown");
+
+                $(".notifications").popover({
+                    html: true,
+                    title: "Notifications",
+                    content: function () {
+                        var compiled = _.template($("#notifications-template").html());
+                        return compiled({ notifications: notifications });
+                    },
+                    placement: "bottom",
+                    template: '<div class="popover popover-notifications"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+                }).on("shown.bs.popover", function () {
+                    $.post("/api/notifications/markAllAsRead")
+                        .done(function () {
+                            $(".js-notifications-count")
+                                .text("")
+                                .addClass("hide");
+                        })
+                        .fail(function () {
+                            alert("Something failed trying to MarkAllAsRead");
+                        });
+                });
+            });
+        });
+    </script>
 </body>
 </html>
