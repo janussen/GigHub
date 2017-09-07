@@ -77,8 +77,8 @@ body {
   background: #A80A0A;
 }
 .dropdown-menu {
-  box-shadow: none;
   -webkit-box-shadow: none;
+  box-shadow: none;
 }
 .navbar-brand {
   font-weight: bold;
