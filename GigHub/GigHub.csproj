@@ -306,7 +306,7 @@
       <DependentUpon>Site.css</DependentUpon>
     </Content>
     <Content Include="Scripts\app\app.js" />
-    <Content Include="Scripts\app\controllers\followingsController.js" />
+    <Content Include="Scripts\app\controllers\detailsController.js" />
     <Content Include="Scripts\app\controllers\gigsController.js" />
     <Content Include="Scripts\app\services\attendanceService.js" />
     <Content Include="Scripts\app\services\followingService.js" />
