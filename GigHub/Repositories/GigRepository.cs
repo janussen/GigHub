@@ -52,5 +52,10 @@ namespace GigHub.Repositories
                     .Include(g => g.Genre)
                     .SingleOrDefault(g => g.Id == gigId);
         }
+
+        public void AddGig(Gig gig)
+        {
+            _context.Gigs.Add(gig);
+        }
     }
 }
