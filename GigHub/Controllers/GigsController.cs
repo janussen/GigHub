@@ -9,18 +9,16 @@ namespace GigHub.Controllers
 {
     public class GigsController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GigsController()
+        public GigsController(IUnitOfWork unitOfWork)
         {
-            _context = new ApplicationDbContext();
-            _unitOfWork = new UnitOfWork(_context);
+            _unitOfWork = unitOfWork;
         }
 
-        public ActionResult Details(int gigId)
+        public ActionResult Details(int id)
         {
-            var gig = _unitOfWork.Gigs.GetGigWithArtistAndGenre(gigId);
+            var gig = _unitOfWork.Gigs.GetGigWithArtistAndGenre(id);
 
             if (gig == null)
             {
@@ -38,7 +36,7 @@ namespace GigHub.Controllers
 
                 viewModel.Following = _unitOfWork.Followings.GetFollowing(userId, gig.ArtistId) != null;
 
-                viewModel.Going = _unitOfWork.Attendances.GetAttendance(userId, gigId) != null;
+                viewModel.Going = _unitOfWork.Attendances.GetAttendance(userId, id) != null;
             }
 
             return View("Details", viewModel);
