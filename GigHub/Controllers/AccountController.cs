@@ -1,5 +1,5 @@
-﻿using GigHub.Models;
-using GigHub.ViewModels;
+﻿using GigHub.Core.Models;
+using GigHub.Core.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -99,7 +99,7 @@ namespace GigHub.Controllers
             {
                 return View("Error");
             }
-            return View(new ViewModels.VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
+            return View(new Core.ViewModels.VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
         //
@@ -107,7 +107,7 @@ namespace GigHub.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> VerifyCode(ViewModels.VerifyCodeViewModel model)
+        public async Task<ActionResult> VerifyCode(Core.ViewModels.VerifyCodeViewModel model)
         {
             if (!ModelState.IsValid)
             {
