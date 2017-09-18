@@ -1,8 +1,6 @@
-﻿using GigHub.Core.Dto;
-using GigHub.Core.Models;
-using GigHub.Persistence;
+﻿using GigHub.Core;
+using GigHub.Core.Dto;
 using Microsoft.AspNet.Identity;
-using System.Linq;
 using System.Web.Http;
 
 namespace GigHub.Controllers.Api
@@ -10,11 +8,11 @@ namespace GigHub.Controllers.Api
     [Authorize]
     public class FollowingsController : ApiController
     {
-        private ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public FollowingsController()
+        public FollowingsController(IUnitOfWork unitOfWork)
         {
-            _context = new ApplicationDbContext();
+            _unitOfWork = unitOfWork;
         }
 
         [HttpPost]
@@ -22,31 +20,26 @@ namespace GigHub.Controllers.Api
         {
             var userId = User.Identity.GetUserId();
 
-            var exists = _context.Followings
-                            .Any(f => f.FolloweeId == dto.FolloweeId && f.FollowerId == userId);
+            var following = _unitOfWork.Followings.GetFollowing(userId, dto.FolloweeId);
 
-            if (exists)
+            if (following != null)
             {
                 return BadRequest("You already follow this artist");
             }
-
-            var following = new Following
+            else
             {
-                FolloweeId = dto.FolloweeId,
-                FollowerId = userId
-            };
-            _context.Followings.Add(following);
-            _context.SaveChanges();
+                _unitOfWork.Followings.Create(userId, dto.FolloweeId);
+                _unitOfWork.Complete();
 
-            return Ok();
+                return Ok();
+            }
         }
 
         [HttpDelete]
         public IHttpActionResult Unfollow(string id)
         {
             var userId = User.Identity.GetUserId();
-            var following = _context.Followings
-                                .SingleOrDefault(f => f.FollowerId == userId && f.FolloweeId == id);
+            var following = _unitOfWork.Followings.GetFollowing(userId, id);
 
             if (following == null)
             {
@@ -54,8 +47,8 @@ namespace GigHub.Controllers.Api
             }
             else
             {
-                _context.Followings.Remove(following);
-                _context.SaveChanges();
+                _unitOfWork.Followings.Delete(following);
+                _unitOfWork.Complete();
                 return Ok(id);
             }
         }

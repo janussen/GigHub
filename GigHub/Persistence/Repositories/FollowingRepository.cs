@@ -28,5 +28,21 @@ namespace GigHub.Core.Persistence.Repositories
                     .Select(f => f.Followee)
                     .ToList();
         }
+
+        public void Create(string userId, string followeeId)
+        {
+            var following = new Following
+            {
+                FolloweeId = followeeId,
+                FollowerId = userId
+            };
+
+            _context.Followings.Add(following);
+        }
+
+        public void Delete(Following following)
+        {
+            _context.Followings.Remove(following);
+        }
     }
 }
