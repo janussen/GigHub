@@ -11,5 +11,7 @@ namespace GigHub.Core.Repositories
         IEnumerable<Gig> GetGigsUserAttending(string userId);
         Gig GetGigWithArtistAndGenre(int gigId);
         Gig GetGigWithAttendees(int gigId);
+        IEnumerable<Gig> GetFutureGigsWithArtistAndGenre();
+        IEnumerable<Gig> SearchFutureGigsWithArtistAndGenre(string query);
     }
 }
