@@ -41,6 +41,11 @@ namespace GigHub.Controllers.Api
             var userId = User.Identity.GetUserId();
             var following = _unitOfWork.Followings.GetFollowing(userId, id);
 
+            if (userId != following.FollowerId)
+            {
+                return Unauthorized();
+            }
+
             if (following == null)
             {
                 return NotFound();
